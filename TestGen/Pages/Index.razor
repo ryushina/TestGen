@@ -1,7 +1,7 @@
 ﻿@page "/"
 @inject ChatService ChatService
 
-<h3>Generate Real-Life Scenarios and SOLO Test Questions</h3>
+<h3>Generate SOLO Test Questions</h3>
 
 <div class="form-container">
     <div class="form-group">
@@ -30,7 +30,7 @@
 @if (!string.IsNullOrWhiteSpace(Result))
 {
     <h4>Output:</h4>
-    <p>@Result</p>
+    <p>@((MarkupString)Result)</p>
 }
 
 @if (isGenerating)
