@@ -1,0 +1,61 @@
+﻿@page "/"
+@inject ChatService ChatService
+
+<h3>Generate Real-Life Scenarios and SOLO Test Questions</h3>
+
+<div class="form-container">
+    <div class="form-group">
+        <label>Course:</label>
+        <input @bind="Course" placeholder="Enter Course" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Content:</label>
+        <textarea @bind="Content" placeholder="Enter Content" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Learning Competency:</label>
+        <textarea @bind="Competency" placeholder="Enter Learning Competency" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Excerpt from Learning Material:</label>
+        <textarea @bind="Excerpt" placeholder="Enter Excerpt" class="form-control"></textarea>
+    </div>
+    <br/>
+    <button @onclick="GenerateScenario" class="btn btn-primary" disabled="@isGenerating">Generate</button>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Result))
+{
+    <h4>Output:</h4>
+    <p>@Result</p>
+}
+
+@if (isGenerating)
+{
+    <div class="loading-spinner">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+
+@code {
+    private string? Course = "";
+    private string? Content = "";
+    private string? Competency = "";
+    private string? Excerpt = "";
+    private string? Result = "";
+    private bool isGenerating = false;
+
+    private async Task GenerateScenario()
+    {
+        isGenerating = true;
+        Result = string.Empty; // Clear previous result
+       // await Task.Delay(500); // Optional delay for better user experience
+        Result = await ChatService.GeneratePrompt(Course ?? string.Empty, Content ?? string.Empty, Competency ?? string.Empty, Excerpt ?? string.Empty);
+        isGenerating = false;
+    }
+}
